@@ -95,6 +95,17 @@ class LocationService:
         return location
 
     @staticmethod
+    def retrieve_all() -> List[Location]:
+        results = (
+            db.session.query(Location, Location.coordinate.ST_AsText()).all()
+        )
+        locations = []
+        for result in results:
+            result[0].wkt_shape = result[1]
+            locations.append(result[0])
+        return locations
+
+    @staticmethod
     def create(location: Dict) -> Location:
         validation_results: Dict = LocationSchema().validate(location)
         if validation_results:
