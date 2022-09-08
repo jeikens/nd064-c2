@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  IMAGE_TAG: jeikens/UdaConnectFrontend:latest
+  IMAGE_TAG: jeikens/udaconnect-frontend:latest
 
 jobs:
 

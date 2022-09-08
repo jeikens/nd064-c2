@@ -4,6 +4,7 @@ metadata:
   labels:
     service: udaconnect-api
   name: udaconnect-api
+  namespace: udaconnect
 spec:
   ports:
   - name: "5000"
@@ -31,7 +32,7 @@ spec:
         service: udaconnect-api
     spec:
       containers:
-      - image: jeikens/UdaConnectApi:latest
+      - image: jeikens/udaconnect-api:latest
         name: udaconnect-api
         imagePullPolicy: Always
         env:

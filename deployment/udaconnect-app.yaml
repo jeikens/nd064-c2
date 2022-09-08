@@ -4,6 +4,7 @@ metadata:
   labels:
     service: udaconnect-app
   name: udaconnect-app
+  namespace: udaconnect
 spec:
   ports:
   - name: "3000"
