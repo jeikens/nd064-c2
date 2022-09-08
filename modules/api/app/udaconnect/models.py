@@ -15,7 +15,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 class Person(db.Model):
     __tablename__ = "person"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     company_name = Column(String, nullable=False)

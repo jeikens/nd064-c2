@@ -7,7 +7,7 @@ from app.udaconnect.schemas import (
     PersonSchema,
 )
 from app.udaconnect.services import ConnectionService, LocationService, PersonService
-from flask import request
+from flask import request, abort
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
@@ -43,7 +43,7 @@ class PersonsResource(Resource):
     @responds(schema=PersonSchema)
     def post(self) -> Person:
         payload = request.get_json()
-        new_person: Person = PersonService.create(payload)
+        new_person: Person = PersonService.create(payload)  # added autoincrement to persons table index
         return new_person
 
     @responds(schema=PersonSchema, many=True)
@@ -59,6 +59,13 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
+    
+    def delete(self, person_id) -> dict:
+        deleted = PersonService.delete(person_id)
+        if not deleted:
+            abort(400, f'Unable to delete User {person_id}')
+        return {'status':"OK"}
+        
 
 
 @api.route("/persons/<person_id>/connection")

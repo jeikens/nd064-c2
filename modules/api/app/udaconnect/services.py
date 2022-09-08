@@ -141,5 +141,13 @@ class PersonService:
         return person
 
     @staticmethod
+    def delete(person_id: int) -> bool:
+        db.session.query(Location).filter(Location.person_id==person_id).delete()
+        db.session.query(Person).filter(Person.id==person_id).delete()
+        db.session.commit()
+        return True # TODO: check if deleted
+
+
+    @staticmethod
     def retrieve_all() -> List[Person]:
         return db.session.query(Person).all()

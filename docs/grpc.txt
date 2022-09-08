@@ -1,1 +1,18 @@
-a gRPC Location example can be found in: modules/locations/client.py
+a working gRPC Location example can be found in: modules/locations/client.py
+
+
+basic code snippet:
+
+import grpc
+import location_pb2
+import location_pb2_grpc
+from datetime import datetime
+
+with grpc.insecure_channel('localhost:50051') as channel:
+    stub = location_pb2_grpc.LocationServiceStub(channel)
+    stub.push(location_pb2.Location(
+        user = 1,
+        latitude = 47.1,
+        longitude = 11.54,
+        utc = datetime.now().timestamp()
+    ))

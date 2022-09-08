@@ -4,9 +4,9 @@ package locationservice;
 
 message Location {
     int32 user = 1;
-    int32 latitude = 2;
-    int32 longitude = 3;
-    int32 utc = 4;
+    float latitude = 2;
+    float longitude = 3;
+    double utc = 4;
 }
 
 message Empty {

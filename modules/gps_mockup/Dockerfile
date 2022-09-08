@@ -5,8 +5,8 @@ WORKDIR /app
 COPY requirements.txt /app
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-EXPOSE 50051
+EXPOSE 8080
 
 COPY . /app
 
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port" , "8080"]
