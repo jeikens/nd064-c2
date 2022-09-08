@@ -21,6 +21,7 @@ metadata:
   labels:
     service: udaconnect-api
   name: udaconnect-api
+  namespace: udaconnect
 spec:
   replicas: 1
   selector:

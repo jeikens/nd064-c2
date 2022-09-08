@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package locationservice;
+
+message Location {
+    int32 user = 1;
+    int32 latitude = 2;
+    int32 longitude = 3;
+    int32 utc = 4;
+}
+
+message Empty {
+
+}
+
+service LocationService {
+    rpc PushLocation(Location) returns (Empty) {}
+}

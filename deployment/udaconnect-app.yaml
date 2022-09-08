@@ -21,6 +21,7 @@ metadata:
   labels:
     service: udaconnect-app
   name: udaconnect-app
+  namespace: udaconnect
 spec:
   replicas: 1
   selector:
@@ -32,7 +33,7 @@ spec:
         service: udaconnect-app
     spec:
       containers:
-      - image: jeikens/UdaConnectFrontend:latest
+      - image: jeikens/udaconnect-frontend:latest
         name: udaconnect-app
         imagePullPolicy: Always
         resources:

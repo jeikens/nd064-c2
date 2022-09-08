@@ -34,6 +34,7 @@ Vagrant.configure("2") do |config|
       sudo zypper --non-interactive install etcd
       sudo zypper --non-interactive install apparmor-parser
       curl -sfL https://get.k3s.io | sh -
+      sudo chmod +r /etc/rancher/k3s/k3s.yaml
     SHELL
   end
 

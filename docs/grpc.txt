@@ -1,0 +1,1 @@
+a gRPC Location example can be found in: modules/locations/client.py
