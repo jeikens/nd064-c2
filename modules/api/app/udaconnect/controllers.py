@@ -11,22 +11,11 @@ from flask import request, abort
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
+import logging
 
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-
-
-# TODO: This needs better exception handling
-
-
-@api.route("/locations/by_id/<location_id>")
-@api.param("location_id", "Unique ID for a given Location", _in="query")
-class LocationResource(Resource):
-    @responds(schema=LocationSchema)
-    def get(self, location_id) -> Location:
-        location: Location = LocationService.retrieve(location_id)
-        return location
 
 
 @api.route("/locations")
@@ -35,6 +24,19 @@ class LocationsResource(Resource):
     def get(self) -> List[Location]:
         location: List[Location] = LocationService.retrieve_all()
         return location
+
+
+@api.route("/locations/<location_id>")
+@api.param("location_id", "Unique ID for a given Location", _in="query")
+class LocationResource(Resource):
+    @responds(schema=LocationSchema)
+    def get(self, location_id) -> Location:
+        location: Location = LocationService.retrieve(location_id)
+        if location is None:
+            abort(404, f'Location {location_id} does not exist')
+        return location
+
+
 
 
 @api.route("/persons")
@@ -61,12 +63,21 @@ class PersonResource(Resource):
         return person
     
     def delete(self, person_id) -> dict:
+        if not PersonService.exists(person_id):
+            abort(404, f'User {person_id} does not exist')
         deleted = PersonService.delete(person_id)
         if not deleted:
-            abort(400, f'Unable to delete User {person_id}')
+            logging.error(f'Unable to delete User {person_id}')
+            abort(500, f'Unable to delete User {person_id}')
         return {'status':"OK"}
         
-
+@api.route("/persons/<person_id>/locations")
+@api.param("person_id", "Unique ID for a given Person", _in="query")
+class PersonResource(Resource):
+    @responds(schema=LocationSchema, many=True)
+    def get(self, person_id) -> List[Location]:
+        location: List[Location] = LocationService.retrieve_by_person(person_id)
+        return location
 
 @api.route("/persons/<person_id>/connection")
 @api.param("start_date", "Lower bound of date range", _in="query")

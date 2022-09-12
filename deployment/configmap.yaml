@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  GRPC_HOST: "udaconnect-locations"
+  GRPC_PORT: "50050"
+  API_HOST: "udaconnect-api"
+metadata:
+  name: udaconnect-env
+  namespace: udaconnect

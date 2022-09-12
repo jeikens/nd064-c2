@@ -7,6 +7,7 @@ from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
+from sqlalchemy.orm.exc import NoResultFound
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
@@ -84,12 +85,14 @@ class ConnectionService:
 class LocationService:
     @staticmethod
     def retrieve(location_id) -> Location:
-        location, coord_text = (
-            db.session.query(Location, Location.coordinate.ST_AsText())
-            .filter(Location.id == location_id)
-            .one()
-        )
-
+        try:
+            location, coord_text = (
+                db.session.query(Location, Location.coordinate.ST_AsText())
+                .filter(Location.id == location_id)
+                .one()
+            )
+        except NoResultFound:
+            return None
         # Rely on database to return text form of point to reduce overhead of conversion in app code
         location.wkt_shape = coord_text
         return location
@@ -98,6 +101,17 @@ class LocationService:
     def retrieve_all() -> List[Location]:
         results = (
             db.session.query(Location, Location.coordinate.ST_AsText()).all()
+        )
+        locations = []
+        for result in results:
+            result[0].wkt_shape = result[1]
+            locations.append(result[0])
+        return locations
+
+    @staticmethod
+    def retrieve_by_person(person_id: int) -> List[Location]:
+        results = (
+            db.session.query(Location, Location.coordinate.ST_AsText()).filter(Location.person_id == person_id)
         )
         locations = []
         for result in results:
@@ -145,8 +159,11 @@ class PersonService:
         db.session.query(Location).filter(Location.person_id==person_id).delete()
         db.session.query(Person).filter(Person.id==person_id).delete()
         db.session.commit()
-        return True # TODO: check if deleted
+        return db.session.query(Person.id).filter(Person.id==person_id).count() == 0
 
+    @staticmethod
+    def exists(person_id: int) -> bool:
+        return db.session.query(Person.id).filter(Person.id==person_id).count() > 0
 
     @staticmethod
     def retrieve_all() -> List[Person]:
