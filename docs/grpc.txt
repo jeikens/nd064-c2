@@ -1,6 +1,5 @@
 A working gRPC Location example can be found in: modules/locations/client.py .
 Furthermore a simple GPS Mockup constantly pushing data to the gRPC server can be found in: utils/gps_mockup/main.py
-(this could also be deployed with utils/gps_mockup/deployment/mockup.yaml - be carefull, it will send locations indefinitely)
 
 
 basic code snippet:
