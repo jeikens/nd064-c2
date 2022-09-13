@@ -14,11 +14,10 @@ logging.basicConfig(
 
 
 # gRPC Server
-
 class LocationServicer(location_pb2_grpc.LocationServiceServicer):
     def __init__(self):
         # get kafka connection details
-        kafka_host = os.environ.get('KAFKA_HOST','kafka')
+        kafka_host = os.environ.get('KAFKA_HOST', 'kafka')
         kafka_port = os.environ.get('KAFKA_PORT', '9092')
         # setup kafka producer
         self.producer = KafkaProducer(
@@ -28,7 +27,8 @@ class LocationServicer(location_pb2_grpc.LocationServiceServicer):
 
     def PushLocation(self, request: location_pb2.Location, context):
         logging.debug(f'{request.user=};{request.latitude=};{request.longitude=};' +
-                  f'datetime={datetime.fromtimestamp(request.utc)}')
+                      f'datetime={datetime.fromtimestamp(request.utc)}')
+        # send data to kafka
         future = self.producer.send(
             os.environ.get('KAFKA_TOPIC', 'udaconnectlocations'),
             {
