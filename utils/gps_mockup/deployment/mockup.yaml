@@ -16,7 +16,7 @@ spec:
         service: mockup
     spec:
       containers:
-      - image: jeikens/mockup:latest
+      - image: jeikens/udaconnect-mockup:latest
         name: mockup
         imagePullPolicy: Always
         env:

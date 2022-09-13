@@ -20,3 +20,8 @@ docker push jeikens/udaconnect-locationworker:latest
 docker build -t udaconnect-frontend ./modules/frontend
 docker tag udaconnect-frontend:latest jeikens/udaconnect-frontend:latest
 docker push jeikens/udaconnect-frontend:latest 
+
+# gps mockup
+docker build -t udaconnect-mockup ./utils/gps_mockup
+docker tag udaconnect-mockup:latest jeikens/udaconnect-mockup:latest
+docker push jeikens/udaconnect-mockup:latest 
