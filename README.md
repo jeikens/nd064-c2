@@ -78,17 +78,18 @@ Afterwards, you can test that `kubectl` works by running a command like `kubectl
 ### Steps
 1. `kubectl apply -f deployment/namespace.yaml` - Set up namespace for the project
 2. `kubectl apply -f deployment/db-configmap.yaml` - Set up environment variables for the pods
-2. `kubectl apply -f deployment/configmap.yaml` - Set up environment variables for the pods
-2. `kubectl apply -f deployment/db-secret.yaml` - Set up secrets for the pods
-2. `kubectl apply -f deployment/kafka_configmap.yaml` - Set up Kafka configuration
-2. `kubectl apply -f deployment/kafka_zookeeper.yaml` - Set up Kafka Zookeeper
-2. `kubectl apply -f deployment/kafka.yaml` - Set up Kafka
-3. `kubectl apply -f deployment/postgres.yaml` - Set up a Postgres database running PostGIS
-4. `kubectl apply -f deployment/udaconnect-api.yaml` - Set up the service and deployment for the API
-4. `kubectl apply -f deployment/udaconnect-locations.yaml` - Set up the service and deployment for the location service
-4. `kubectl apply -f deployment/udaconnect-locationworker.yaml` - Set up the service and deployment for the Kafka Lokation Worker
-5. `kubectl apply -f deployment/udaconnect-app.yaml` - Set up the service and deployment for the web app
-6. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
+3. `kubectl apply -f deployment/configmap.yaml` - Set up environment variables for the pods
+4. `kubectl apply -f deployment/db-secret.yaml` - Set up secrets for the pods
+5. `kubectl apply -f deployment/kafka_configmap.yaml` - Set up Kafka configuration
+6. `kubectl apply -f deployment/kafka_zookeeper.yaml` - Set up Kafka Zookeeper
+7. `kubectl apply -f deployment/kafka.yaml` - Set up Kafka
+8. preferably wait for kafka to be available. otherwise udaconnect-locations could enter CrashLoopBackOff state
+9. `kubectl apply -f deployment/postgres.yaml` - Set up a Postgres database running PostGIS
+10. `kubectl apply -f deployment/udaconnect-api.yaml` - Set up the service and deployment for the API
+11. `kubectl apply -f deployment/udaconnect-locations.yaml` - Set up the service and deployment for the location service
+12. `kubectl apply -f deployment/udaconnect-locationworker.yaml` - Set up the service and deployment for the Kafka Lokation Worker
+13. `kubectl apply -f deployment/udaconnect-app.yaml` - Set up the service and deployment for the web app
+14. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
 
 Manually applying each of the individual `yaml` files is cumbersome but going through each step provides some context on the content of the starter project. In practice, we would have reduced the number of steps by running the command against a directory to apply of the contents: `kubectl apply -f deployment/`.
 
