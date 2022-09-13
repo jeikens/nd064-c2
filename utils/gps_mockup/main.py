@@ -21,7 +21,7 @@ def register_person() -> Union[int, None]:
         'last_name':names.get_last_name(),
         'company_name':f'{names.get_last_name()} {random.choice(["GmbH", "Inc.", "LLC", "AG"])}'
     }
-    result = requests.post(f'http://localhost:30001/api/persons', json=person)
+    result = requests.post(f'http://{host}:30001/api/persons', json=person)
     if result.status_code == 200:
         return result.json()['id']
     else:
