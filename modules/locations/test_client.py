@@ -4,7 +4,6 @@ Used to simulate location entries sent by user mobile phones
 import grpc
 import location_pb2
 import location_pb2_grpc
-import config
 from datetime import datetime
 
 def send_location(stub: location_pb2_grpc.LocationServiceStub, usr: float, lat: float, long: float, timestamp: datetime):
@@ -21,6 +20,6 @@ def send_location(stub: location_pb2_grpc.LocationServiceStub, usr: float, lat: 
 
 
 if __name__ == '__main__':
-    with grpc.insecure_channel(config.grpc_host) as channel:
+    with grpc.insecure_channel('localhost:30051') as channel:
         stub = location_pb2_grpc.LocationServiceStub(channel)
         send_location(stub, 1, 47, 11, datetime.now())

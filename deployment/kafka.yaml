@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: kafka
+  name: kafka
+  namespace: udaconnect
+spec:
+  ports:
+  - name: "9092"
+    port: 9092
+    targetPort: 9092
+    nodePort: 30092
+  selector:
+    service: kafka
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: kafka
+  name: kafka
+  namespace: udaconnect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: kafka
+  template:
+    metadata:
+      labels:
+        service: kafka
+    spec:
+      containers:
+        - image: bitnami/kafka:3.2
+          name: kafka
+          ports:
+            - containerPort: 9092
+          env:
+          - name: ALLOW_PLAINTEXT_LISTENER
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: ALLOW_PLAINTEXT_LISTENER
+          - name: KAFKA_CFG_ADVERTISED_LISTENERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_ADVERTISED_LISTENERS
+          - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+          - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+          - name: KAFKA_CFG_LISTENERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_LISTENERS
+          - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+          - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: KAFKA_CFG_ZOOKEEPER_CONNECT
+      restartPolicy: Always

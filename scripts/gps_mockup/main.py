@@ -32,10 +32,10 @@ def run_gps_mockup():
     person_id = register_person()
     if person_id is not None:
         print(f'Created new user {person_id} - {running}')
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel('localhost:30051') as channel:
             stub = location_pb2_grpc.LocationServiceStub(channel)
             while (running):
-                loc = random.choice(locations)
+                loc = random.choice(locations[:10])
                 print(f'{person_id}: pushing {loc}')
                 stub.PushLocation(location_pb2.Location(
                     user=person_id,

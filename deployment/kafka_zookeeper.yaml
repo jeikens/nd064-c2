@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: zookeeper
+  name: zookeeper
+  namespace: udaconnect
+spec:
+  ports:
+  - name: "2181"
+    port: 2181
+    targetPort: 2181
+    nodePort: 32181
+  selector:
+    service: zookeeper
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: zookeeper
+  name: zookeeper
+  namespace: udaconnect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: zookeeper
+  template:
+    metadata:
+      labels:
+        service: zookeeper
+    spec:
+      containers:
+        - image: bitnami/zookeeper:3.8
+          name: zookeeper
+          ports:
+            - containerPort: 2181
+          env:
+          - name: ALLOW_ANONYMOUS_LOGIN
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-env
+                key: ALLOW_ANONYMOUS_LOGIN
+      restartPolicy: Always

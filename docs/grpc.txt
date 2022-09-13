@@ -1,4 +1,5 @@
-a working gRPC Location example can be found in: modules/locations/client.py
+A working gRPC Location example can be found in: modules/locations/client.py .
+Furthermore a simple GPS Mockup constantly pushing data to the gRPC server can be found in: scripts/gps_mockup/main.py
 
 
 basic code snippet:
@@ -8,7 +9,7 @@ import location_pb2
 import location_pb2_grpc
 from datetime import datetime
 
-with grpc.insecure_channel('localhost:50051') as channel:
+with grpc.insecure_channel('localhost:30051') as channel:
     stub = location_pb2_grpc.LocationServiceStub(channel)
     stub.push(location_pb2.Location(
         user = 1,
