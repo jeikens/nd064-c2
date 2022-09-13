@@ -1,15 +1,12 @@
 I extracted the receiving and storing of location data.
 
-
 ApiService: Providing information for the frontend.
 Using REST due to its flexibility since person metadata is likely to change over time.
 Possible future extensions (for example plotting a persons location history) can easily be intregrated.
 
-
 LocationService: gRPC protokol to receive location data most likely produced by mobile phones.
 Location data and its metadata is unlikely to change frequently. Therefore the flexibility of REST is not required.
 gRPC is generally faster and reduces data overhead compared to REST. Mobile devices do not require an intermediary proxy to the backend service.
-
 
 Kafka queue to write received loaction data to the database.
 Steady Stream of location data that needs to be written to the database.
