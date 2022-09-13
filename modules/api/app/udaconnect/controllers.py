@@ -19,10 +19,9 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 
 
 person_model = api.schema_model('Person', {
-    'required': ['id', 'first_name', 'last_name', 'company_name'],
+    'required': ['first_name', 'last_name', 'company_name'],
     'type': 'object',
     'properties': {
-        'id': {'type': 'integer'},
         'first_name': {'type': 'string'},
         'last_name': {'type': 'string'},
         'company_name': {'type': 'string'}

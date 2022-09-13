@@ -42,6 +42,11 @@ spec:
             configMapKeyRef:
               name: udaconnect-env
               key: API_HOST
+        - name: API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: udaconnect-env
+              key: API_PORT
         - name: KAFKA_HOST
           valueFrom:
             configMapKeyRef:
