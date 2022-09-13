@@ -1,0 +1,149 @@
+# I adapted the flask restx endpoint to provide the full api documentation on http://localhost:30001/
+#
+# this file is an export from there: http://localhost:30001/swagger.json -> opened in swagger editor and saved as yaml
+swagger: '2.0'
+basePath: /
+paths:
+  /api/locations:
+    get:
+      responses:
+        '200':
+          description: Success
+      description: Get all stored locations
+      operationId: get_locations_resource_/api/locations
+      tags:
+        - UdaConnect
+  /api/locations/{location_id}:
+    parameters:
+      - in: path
+        description: Unique ID for a given Location
+        name: location_id
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Unknown ID
+      description: Get a specific location by id
+      operationId: get_location_resource_/api/locations/<location_id>
+      tags:
+        - UdaConnect
+  /api/persons:
+    get:
+      responses:
+        '200':
+          description: Success
+      description: Get all registered persons or post a new one
+      operationId: get_persons_resource_/api/persons
+      tags:
+        - UdaConnect
+    post:
+      responses:
+        '200':
+          description: Success
+      description: Get all registered persons or post a new one
+      operationId: post_persons_resource_/api/persons
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Person'
+      tags:
+        - UdaConnect
+  /api/persons/{person_id}:
+    parameters:
+      - in: path
+        description: Unique ID for a given Person
+        name: person_id
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: Success
+      description: Get information about one specific person
+      operationId: get_person_resource_/api/persons/<person_id>
+      tags:
+        - UdaConnect
+    delete:
+      responses:
+        '200':
+          description: Success
+      description: Get information about one specific person
+      operationId: delete_person_resource_/api/persons/<person_id>
+      tags:
+        - UdaConnect
+  /api/persons/{person_id}/connection:
+    parameters:
+      - in: query
+        description: Proximity to a given user in meters
+        name: distance
+        type: string
+      - in: query
+        description: Upper bound of date range
+        name: end_date
+        type: string
+      - in: query
+        description: Lower bound of date range
+        name: start_date
+        type: string
+      - in: path
+        description: Unique ID for a given Person
+        name: person_id
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: Success
+      description: Get the detected connections of a person within a given timeframe
+      operationId: get_connection_data_resource_/api/persons/<person_id>/connection
+      tags:
+        - UdaConnect
+  /api/persons/{person_id}/locations:
+    parameters:
+      - in: path
+        description: Unique ID for a given Person
+        name: person_id
+        required: true
+        type: string
+    get:
+      responses:
+        '200':
+          description: Success
+      description: Get the location history of a person
+      operationId: get_person_location_resource_/api/persons/<person_id>/locations
+      tags:
+        - UdaConnect
+info:
+  title: UdaConnect API
+  version: 0.1.0
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+  - name: UdaConnect
+    description: Connections via geolocation.
+definitions:
+  Person:
+    required:
+      - first_name
+      - last_name
+      - company_name
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      company_name:
+        type: string
+responses:
+  ParseError:
+    description: When a mask can't be parsed
+  MaskError:
+    description: When any error occurs on mask
