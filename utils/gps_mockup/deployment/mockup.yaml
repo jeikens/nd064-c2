@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: mockup
+  name: mockup
+  namespace: udaconnect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mockup
+  template:
+    metadata:
+      labels:
+        service: mockup
+    spec:
+      containers:
+      - image: jeikens/mockup:latest
+        name: mockup
+        imagePullPolicy: Always
+        env:
+        - name: MOCKUP_COUNT
+          value: "2"
+        - name: API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: udaconnect-env
+              key: API_HOST
+        - name: API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: udaconnect-env
+              key: API_PORT
+        - name: GPRC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: udaconnect-env
+              key: API_PORT
+        - name: GRPC_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: udaconnect-env
+              key: API_PORT
+      restartPolicy: Always
